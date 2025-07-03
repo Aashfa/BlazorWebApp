@@ -1,4 +1,17 @@
 # Blazor Server Application
+![image](https://github.com/user-attachments/assets/a9004e43-d219-40b9-b97e-1a695d4fb247)
+![image](https://github.com/user-attachments/assets/490f7c7f-5a10-4ed4-876a-cf717e20f93d)
+![image](https://github.com/user-attachments/assets/2209a74f-d1a2-4f66-b4ee-384e0d490689)
+![image](https://github.com/user-attachments/assets/2de62009-035a-4b08-ab6a-d56985501c01)
+![image](https://github.com/user-attachments/assets/5ada7e72-7259-4b54-be0a-09932ad88e29)
+![image](https://github.com/user-attachments/assets/3436696c-a9b9-44e6-b10f-17273f6128d7)
+![image](https://github.com/user-attachments/assets/433413ef-d029-411c-849b-7fd872ce5b7f)
+
+
+
+
+
+
 
 ## 📌 Project Overview
 

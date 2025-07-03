@@ -66,20 +66,6 @@ This is a **Blazor Server** web application showcasing key enterprise-level feat
 
 
 ---
-
-## 📂 Project Structure
-
-```plaintext
-Blazor-web-App/
-│
-├── DAL/              # Data Access Layer (ADO.NET code)
-├── BLL/              # Business Logic Layer
-├── Entities/         # Entity Models
-├── BlazorApp/        # Blazor Components
-├── API/              # ASP.NET Core Web API Project
-
----
-
 ## 🚀 Running the App Locally
 
 ### 🧰 Step 1: Clone and Set Up the Project
@@ -119,3 +105,18 @@ Press F5 in Visual Studio or run dotnet run
 #### Access the app:
 
 Navigate to https://localhost:xxxx/ (port will be shown in the terminal)
+---
+
+## 📂 Project Structure
+
+```plaintext
+Blazor-web-App/
+│
+├── DAL/              # Data Access Layer (ADO.NET code)
+├── BLL/              # Business Logic Layer
+├── Entities/         # Entity Models
+├── BlazorApp/        # Blazor Components
+├── API/              # ASP.NET Core Web API Project
+
+---
+

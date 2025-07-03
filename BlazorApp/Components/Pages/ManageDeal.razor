@@ -15,6 +15,21 @@
         </button>
     </div>
 
+    @if (isLoading)
+    {
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+            <button @onclick="() => errorMessage = string.Empty" class="close">&times;</button>
+        </div>
+    }
+
     @if (showAddForm)
     {
         <div class="deal-form">
@@ -142,6 +157,8 @@
     private bool showDeleteModal = false;
     private int dealToDeleteId;
     private string dealToDeleteName = string.Empty;
+    private bool isLoading = false;
+    private string errorMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -150,7 +167,24 @@
 
     private async Task LoadDeals()
     {
-        deals = dealService.GetAllDeals();
+        try
+        {
+            isLoading = true;
+            StateHasChanged();
+
+            deals = await dealService.GetAllDeals();
+            errorMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load deals: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("console.error", errorMessage);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
     }
 
     private void ToggleAddForm()
@@ -159,12 +193,32 @@
         if (showAddForm) newDeal = new Deal();
     }
 
-    private void SaveDeal()
+    private async Task SaveDeal()
     {
-        dealService.CreateDeal(newDeal);
-        deals = dealService.GetAllDeals();
-        showAddForm = false;
-        newDeal = new Deal();
+        try
+        {
+            isLoading = true;
+            StateHasChanged();
+
+            var dealId = await dealService.CreateDeal(newDeal);
+            if (dealId > 0)
+            {
+                await LoadDeals();
+                showAddForm = false;
+                newDeal = new Deal();
+                await JSRuntime.InvokeVoidAsync("alert", "Deal created successfully!");
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to create deal: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("console.error", errorMessage);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
     }
 
     private void ShowEditForm(Deal deal)
@@ -180,11 +234,31 @@
         showEditModal = true;
     }
 
-    private void UpdateDeal()
+    private async Task UpdateDeal()
     {
-        dealService.UpdateDeal(editingDeal);
-        deals = dealService.GetAllDeals();
-        showEditModal = false;
+        try
+        {
+            isLoading = true;
+            StateHasChanged();
+
+            var success = await dealService.UpdateDeal(editingDeal);
+            if (success)
+            {
+                await LoadDeals();
+                showEditModal = false;
+                await JSRuntime.InvokeVoidAsync("alert", "Deal updated successfully!");
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to update deal: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("console.error", errorMessage);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
     }
 
     private void CloseEditModal()
@@ -206,22 +280,34 @@
 
     private async Task ConfirmDelete()
     {
-        var success = dealService.DeleteDeal(dealToDeleteId);
-        if (success)
+        try
         {
-            await LoadDeals();
-            showDeleteModal = false;
+            isLoading = true;
             StateHasChanged();
+
+            var success = await dealService.DeleteDeal(dealToDeleteId);
+            if (success)
+            {
+                await LoadDeals();
+                showDeleteModal = false;
+                await JSRuntime.InvokeVoidAsync("alert", "Deal deleted successfully!");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Failed to delete deal");
+            errorMessage = $"Failed to delete deal: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("console.error", errorMessage);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
         }
     }
 }
 
 <style>
-    /* Reused from products page with deal-specific adjustments */
+    /* [Previous CSS remains exactly the same] */
     .btn-primary {
         background-color: #6a66bd;
         border: none;
@@ -484,5 +570,62 @@
                 width: 100%;
                 margin-bottom: 10px;
             }
+    }
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+    }
+
+    .spinner {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #6a66bd;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .close {
+        float: right;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: 0.5;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
     }
 </style>

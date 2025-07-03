@@ -1,12 +1,20 @@
-﻿@layout AdminLayout
+﻿@page "/deals"
+@layout AdminLayout
 @using Entities
 @inject NavigationManager NavigationManager
 @inject IDealService dealService
+@inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
 <h3 class="deals-header">Special Deals</h3>
 
-@if (deals == null || !deals.Any())
+@if (isLoading)
+{
+    <div class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+}
+else if (deals == null || !deals.Any())
 {
     <p>No deals available</p>
 }
@@ -43,16 +51,23 @@ else
 
 @code {
     private List<Deal> deals = new();
+    private bool isLoading = true;
+    private string errorMessage = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         try
         {
-            deals = dealService.GetAllDeals() ?? new List<Deal>();
+            deals = await dealService.GetAllDeals() ?? new List<Deal>();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading deals: {ex.Message}");
+            errorMessage = $"Error loading deals: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("console.error", errorMessage);
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
@@ -66,6 +81,7 @@ else
 }
 
 <style>
+    /* [Previous CSS remains exactly the same] */
     .deals-header {
         text-align: center;
         margin: 2rem 0;
@@ -228,6 +244,37 @@ else
 
         .deal-price {
             font-size: 1.5rem;
+        }
+    }
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+    }
+
+    .spinner {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #6a66bd;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
         }
     }
 </style>

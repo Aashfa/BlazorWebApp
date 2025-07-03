@@ -1,0 +1,488 @@
+﻿@page "/admin/deals"
+@layout AdminLayout
+@using Entities
+@inject NavigationManager NavigationManager
+@inject IDealService dealService
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<div class="admin-content">
+    <div class="admin-header">
+        <h3>Manage Special Deals</h3>
+        <button class="btn btn-primary" @onclick="ToggleAddForm">
+            <i class="fas @(showAddForm ? "fa-times" : "fa-plus")"></i>
+            @(showAddForm ? "Cancel" : "Add New Deal")
+        </button>
+    </div>
+
+    @if (showAddForm)
+    {
+        <div class="deal-form">
+            <h4>Add New Deal</h4>
+            <EditForm Model="newDeal" OnValidSubmit="SaveDeal">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <InputText class="form-control" @bind-Value="newDeal.Title" />
+                    <ValidationMessage For="@(() => newDeal.Title)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <InputNumber class="form-control" @bind-Value="newDeal.Price" />
+                    <ValidationMessage For="@(() => newDeal.Price)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Poster URL</label>
+                    <InputText class="form-control" @bind-Value="newDeal.PosterUrl" />
+                    <ValidationMessage For="@(() => newDeal.PosterUrl)" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Save Deal</button>
+                    <button type="button" class="btn btn-secondary" @onclick="ToggleAddForm">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    }
+
+    <div class="deal-grid">
+        @foreach (var deal in deals)
+        {
+            <div class="deal-card">
+                <div class="deal-image-container">
+                    @if (!string.IsNullOrEmpty(deal.PosterUrl))
+                    {
+                        <img src="@deal.PosterUrl" class="deal-image" alt="@deal.Title" />
+                    }
+                    else
+                    {
+                        <div class="deal-placeholder">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                    }
+                </div>
+                <div class="deal-details">
+                    <h5 class="deal-title">@deal.Title</h5>
+                    <p class="price">Rs.@deal.Price.ToString("0.00")</p>
+                    <p class="date">Created: @deal.CreatedAt.ToString("dd MMM yyyy")</p>
+                    <div class="deal-actions">
+                        <button class="btn btn-sm btn-primary" @onclick="() => ShowEditForm(deal)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirmation(deal.DealId, deal.Title)">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (showEditModal)
+{
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <h4>Edit Deal</h4>
+            <EditForm Model="editingDeal" OnValidSubmit="UpdateDeal">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <InputText class="form-control" @bind-Value="editingDeal.Title" />
+                    <ValidationMessage For="@(() => editingDeal.Title)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <InputNumber class="form-control" @bind-Value="editingDeal.Price" />
+                    <ValidationMessage For="@(() => editingDeal.Price)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Poster URL</label>
+                    <InputText class="form-control" @bind-Value="editingDeal.PosterUrl" />
+                    <ValidationMessage For="@(() => editingDeal.PosterUrl)" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Update Deal</button>
+                    <button type="button" class="btn btn-secondary" @onclick="CloseEditModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@if (showDeleteModal)
+{
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <h4>Confirm Delete</h4>
+            <p>Are you sure you want to delete "@dealToDeleteName"?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Deal> deals = new();
+    private Deal newDeal = new();
+    private Deal editingDeal = new();
+    private bool showAddForm = false;
+    private bool showEditModal = false;
+    private bool showDeleteModal = false;
+    private int dealToDeleteId;
+    private string dealToDeleteName = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDeals();
+    }
+
+    private async Task LoadDeals()
+    {
+        deals = dealService.GetAllDeals();
+    }
+
+    private void ToggleAddForm()
+    {
+        showAddForm = !showAddForm;
+        if (showAddForm) newDeal = new Deal();
+    }
+
+    private void SaveDeal()
+    {
+        dealService.CreateDeal(newDeal);
+        deals = dealService.GetAllDeals();
+        showAddForm = false;
+        newDeal = new Deal();
+    }
+
+    private void ShowEditForm(Deal deal)
+    {
+        editingDeal = new Deal
+            {
+                DealId = deal.DealId,
+                Title = deal.Title,
+                Price = deal.Price,
+                PosterUrl = deal.PosterUrl,
+                CreatedAt = deal.CreatedAt
+            };
+        showEditModal = true;
+    }
+
+    private void UpdateDeal()
+    {
+        dealService.UpdateDeal(editingDeal);
+        deals = dealService.GetAllDeals();
+        showEditModal = false;
+    }
+
+    private void CloseEditModal()
+    {
+        showEditModal = false;
+    }
+
+    private void ShowDeleteConfirmation(int id, string name)
+    {
+        dealToDeleteId = id;
+        dealToDeleteName = name;
+        showDeleteModal = true;
+    }
+
+    private void CancelDelete()
+    {
+        showDeleteModal = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        var success = dealService.DeleteDeal(dealToDeleteId);
+        if (success)
+        {
+            await LoadDeals();
+            showDeleteModal = false;
+            StateHasChanged();
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Failed to delete deal");
+        }
+    }
+}
+
+<style>
+    /* Reused from products page with deal-specific adjustments */
+    .btn-primary {
+        background-color: #6a66bd;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(106, 102, 189, 0.3);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6a66bd 0%, #ff6b9d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(106, 102, 189, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(106, 102, 189, 0.4);
+        }
+
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(106, 102, 189, 0.3);
+        }
+
+        .btn-primary i {
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover i {
+            transform: scale(1.1);
+        }
+
+        .btn-primary[class*="fa-times"] {
+            background-color: #ff6b9d;
+        }
+
+            .btn-primary[class*="fa-times"]:hover {
+                background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            }
+
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+        .admin-header h3 {
+            margin-right: auto;
+            background: linear-gradient(45deg, #6a66bd, #ff6b9d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+    .admin-content {
+        flex: 1;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .deal-form {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .deal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .deal-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+    .deal-image-container {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+        position: relative;
+    }
+
+    .deal-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
+
+    .deal-card:hover .deal-image {
+        transform: scale(1.05);
+    }
+
+    .deal-placeholder {
+        color: #6a66bd;
+        font-size: 3rem;
+        opacity: 0.3;
+    }
+
+    .deal-details {
+        padding: 15px;
+    }
+
+    .deal-title {
+        margin-top: 0;
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .price {
+        font-weight: bold;
+        color: #ff6b9d;
+        margin: 5px 0;
+        font-size: 1.2rem;
+    }
+
+    .date {
+        color: #666;
+        font-size: 0.8rem;
+        margin: 5px 0;
+    }
+
+    .deal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    /* Button styles matching products page */
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.2rem;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @@keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .deal-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .deal-form,
+        .modal-content {
+            padding: 15px;
+        }
+
+        .form-actions,
+        .modal-actions {
+            flex-direction: column;
+        }
+
+            .form-actions button,
+            .modal-actions button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+    }
+</style>

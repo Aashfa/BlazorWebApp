@@ -1,0 +1,112 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Panel</h3>
+        </div>
+
+        <div class="sidebar-menu">
+            <NavLink href="/admin/products" class="menu-item" activeclass="active">
+                <i class="fas fa-ice-cream"></i>
+                <span>Ice Creams</span>
+            </NavLink>
+
+            <NavLink href="/admin/deals" class="menu-item" activeclass="active">
+                <i class="fas fa-tag"></i>
+                <span>Deals</span>
+            </NavLink>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        @Body <!-- This renders the page content -->
+    </main>
+</div>
+
+<style>
+    .admin-layout {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #6a66bd;
+        color: white;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+    }
+
+    .sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+        .sidebar-header h3 {
+            margin: 0;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+    .sidebar-menu {
+        padding: 15px 0;
+    }
+
+    .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: #ecf0f1;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background: #ff6b9d;
+            border-left: 4px solid white;
+        }
+
+        .menu-item i {
+            width: 24px;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+    .main-content {
+        flex: 1;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+
+    /* Mobile responsive */
+    @@media (max-width: 768px) {
+        .sidebar {
+            width: 60px;
+        }
+
+        .sidebar-header h3,
+        .menu-item span {
+            display: none;
+        }
+
+        .menu-item {
+            justify-content: center;
+            padding: 15px 0;
+        }
+
+            .menu-item i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+    }
+</style>

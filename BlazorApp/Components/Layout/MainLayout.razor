@@ -1,0 +1,187 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavManager
+
+<div class="page-container">
+    <!-- Navbar with proper left/right alignment -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Left-aligned brand -->
+            <div class="navbar-brand">SCOOPY</div>
+
+            <!-- Right-aligned links -->
+            <div class="nav-links">
+                <NavLink class="nav-link" href="/" match="NavLinkMatch.All">HOME</NavLink>
+                <NavLink class="nav-link" href="/story">OUR STORY</NavLink>
+                <NavLink class="nav-link" href="/menu">MENU</NavLink>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        @Body
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<style>
+    .nav-container {
+        display: flex;
+        justify-content: space-between; /* This pushes brand left and links right */
+        align-items: center;
+        width: 100%; /* Ensure full width */
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .navbar-brand {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: white;
+        margin-right: auto; /* Pushes everything else to the right */
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        margin-left: auto; /* Aligns links to the right */
+    }
+    /* Base styles */
+    .page-container {
+        position: relative;
+        min-height: 100vh;
+    }
+
+    /* Navbar styles */
+    .navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 2rem 5%;
+        z-index: 1000;
+        background: transparent;
+    }
+
+    /* .nav-container { */
+    /*     display: flex; */
+    /*     justify-content: space-between; */
+    /*     align-items: center; */
+    /*     max-width: 1400px; */
+    /*     margin: 0 auto; */
+    /*     padding: 0 2rem; */
+    /* } */
+
+    /* .navbar-brand { */
+    /*     font-size: 2.2rem; */
+    /*     font-weight: 800; */
+    /*     color: white; */
+    /*     text-decoration: none; */
+    /*     letter-spacing: 1px; */
+    /* } */
+
+    /* .nav-links { */
+    /*     display: flex; */
+    /*     gap: 2.5rem; */
+    /*     align-items: center; */
+    /* } */
+
+    .nav-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+
+        .nav-link:hover {
+            color: #ff6b9d;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ff6b9d;
+            font-weight: 700;
+        }
+
+    /* Special button styles */
+    .cart-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .cart-icon {
+        font-size: 1.2rem;
+    }
+
+
+    /* Main content adjustment */
+    main {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 992px) {
+        .nav-container {
+            padding: 0 1rem;
+        }
+
+        .nav-links {
+            gap: 1.5rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .navbar {
+            padding: 1.5rem 5%;
+        }
+
+        .nav-links {
+            gap: 1rem;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+        }
+
+        .order-now-btn {
+            padding: 0.6rem 1.2rem;
+        }
+    }
+</style>
+@* @inherits LayoutComponentBase *@
+
+@* <div class="page"> *@
+@*     <div class="sidebar"> *@
+@*         <NavMenu /> *@
+@*     </div> *@
+
+@*     <main> *@
+@*         <div class="top-row px-4"> *@
+@*             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
+@*         </div> *@
+
+@*         <article class="content px-4"> *@
+@*             @Body *@
+@*         </article> *@
+@*     </main> *@
+@* </div> *@
+
+@* <div id="blazor-error-ui"> *@
+@*     An unhandled error has occurred. *@
+@*     <a href="" class="reload">Reload</a> *@
+@*     <a class="dismiss">🗙</a> *@
+@* </div> *@

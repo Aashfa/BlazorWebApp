@@ -1,0 +1,193 @@
+﻿@* Footer.razor *@
+@inject NavigationManager NavManager
+
+<style>
+    .footer {
+        background-image: url('/Images/bg.png');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 3rem 2rem;
+        position: relative;
+    }
+
+    .footer-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(106, 102, 189, 0.85); /* #6a66bd with 85% opacity */
+    }
+
+    .footer-container {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    /* Keep all other CSS styles exactly the same */
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+
+    .footer-logo {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: #ff6b9d;
+    }
+
+    .footer-slogan {
+        font-style: italic;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .social-icon {
+        color: white;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+    }
+
+        .social-icon:hover {
+            color: #ff6b9d;
+        }
+
+    .footer-heading {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #ff6b9d;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-link {
+        margin-bottom: 0.8rem;
+    }
+
+        .footer-link a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .footer-link a:hover {
+                color: #ff6b9d;
+            }
+
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .contact-icon {
+        font-size: 1.2rem;
+        color: #ff6b9d;
+    }
+
+    .copyright {
+        text-align: center;
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.9rem;
+    }
+
+    @@media (max-width: 768px) {
+        .footer-container {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .footer-brand {
+            align-items: center;
+        }
+
+        .social-links {
+            justify-content: center;
+        }
+
+        .contact-item {
+            justify-content: center;
+        }
+    }
+</style>
+
+<footer class="footer">
+    <div class="footer-overlay"></div>
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3 class="footer-logo">SCOOPY</h3>
+            <p class="footer-slogan">Scoop happiness in every bite!</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/scoopyicecream" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/scoopyicecream" target="_blank" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://www.twitter.com/scoopyicecream" target="_blank" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-links-section">
+            <h4 class="footer-heading">Quick Links</h4>
+            <ul class="footer-links">
+                <li class="footer-link"><a href="/">Home</a></li>
+                <li class="footer-link"><a href="/menu">Our Menu</a></li>
+                <li class="footer-link"><a href="/about">About Us</a></li>
+                <li class="footer-link"><a href="/contact">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            <h4 class="footer-heading">Contact Us</h4>
+            <div class="contact-item">
+                <span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                <span>123 Ice Cream Street, Sweetville, SV 12345</span>
+            </div>
+            <div class="contact-item">
+                <span class="contact-icon"><i class="fas fa-phone"></i></span>
+                <span>+1 (555) 123-4567</span>
+            </div>
+            <div class="contact-item">
+                <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                <span>hello@scoopy.com</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright">
+        <p>&copy; @DateTime.Now.Year Scoopy Ice Cream. All Rights Reserved.</p>
+    </div>
+</footer>
+
+@code {
+    // Add any necessary code logic here
+}

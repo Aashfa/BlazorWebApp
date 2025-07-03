@@ -1,0 +1,27 @@
+﻿@page "/addnew"
+@rendermode InteractiveServer
+@inject IIceCreamService dbservice
+@inject NavigationManager nm
+<h3>Add New Product</h3>
+<EditForm Model="pm" OnValidSubmit="SaveProduct">
+
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<input type="text" placeholder="Enter Product Title" @bind="pm.Name" />
+	<input type="text" placeholder="Enter Product Flavor" @bind="pm.Flavor" />
+	<input type="text" placeholder="Enter Product Description" @bind="pm.Description" />
+	<input type="number" placeholder="Enter Product Product price" @bind="pm.Price" />
+	<input type="text" placeholder="Enter Image Url" @bind="pm.PhotoUrl" />
+
+	<button>Save Product</button>
+</EditForm>
+
+@code {
+	private IceCream pm = new IceCream();
+	private void SaveProduct()
+	{
+		dbservice.SaveProduct(pm);
+		nm.NavigateTo("products");
+	}
+}

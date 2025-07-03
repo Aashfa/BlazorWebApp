@@ -1,0 +1,248 @@
+﻿@page "/menu"
+@inject NavigationManager NavManager
+@inject IIceCreamService dbservice
+
+<style>
+    /* Hero Section Styles (unchanged) */
+    .menu-hero {
+        position: relative;
+        width: 100%;
+        height: 50vh;
+        min-height: 400px;
+        background-image: url('/Images/bg.png');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(106, 102, 189, 0.6);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 2rem;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        font-style: italic;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Updated Menu Styles */
+    .menu-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .menu-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #ff6b9d;
+        font-weight: 800;
+    }
+
+    .menu-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .menu-item {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+    /* Updated Image Container */
+    .image-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        min-height: 250px; /* Adjust this value as needed */
+    }
+
+    .item-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Changed from 'cover' to 'contain' */
+        transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover .item-image {
+        transform: scale(1.05);
+    }
+
+    .item-details {
+        padding: 1.2rem;
+    }
+
+    .item-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .item-flavor {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+        font-size: 1.1rem;
+        color: #ff6b9d;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .add-btn {
+        background-color: #ff6b9d;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 20px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .add-btn:hover {
+            background-color: #ff4785;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 107, 157, 0.3);
+        }
+
+    /* Responsive Adjustments */
+    @@media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .menu-items {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+        }
+
+        .image-container {
+            min-height: 200px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .menu-items {
+            grid-template-columns: 1fr;
+        }
+
+        .menu-title {
+            font-size: 2rem;
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+
+        .image-container {
+            min-height: 180px;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="menu-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">OUR ICE CREAM MENU</h1>
+        <p class="hero-subtitle">Discover our delicious frozen treats</p>
+    </div>
+</div>
+
+<!-- Menu Section -->
+<div class="menu-container">
+    <h2 class="menu-title">Our Delicious Ice Creams</h2>
+
+    @if (products == null || !products.Any())
+    {
+        <p>Loading ice creams...</p>
+    }
+    else
+    {
+        <div class="menu-items">
+            @foreach (var item in products)
+            {
+                <div class="menu-item" key="@item.IceCreamId">
+                    <div class="image-container">
+                        <img src="@item.PhotoUrl" alt="@item.Name" class="item-image" />
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">@item.Name</h3>
+                        <p class="item-flavor">@item.Flavor</p>
+                        <p class="item-price">Rs @item.Price.ToString("0")/-</p>
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<Footer />
+
+@code {
+    private List<IceCream> products = new();
+
+    protected override void OnInitialized()
+    {
+        products = dbservice.GetProducts();
+    }
+
+   
+}

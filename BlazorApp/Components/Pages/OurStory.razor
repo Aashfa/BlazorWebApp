@@ -1,0 +1,422 @@
+﻿@page "/story"
+@rendermode InteractiveServer
+
+<!-- Hero Section -->
+<div class="hero-section" style="background-image: url('/images/bg.png');">
+    <div class="hero-overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="hero-title animate__animated animate__fadeInDown">Our Sweet Journey</h1>
+                    <p class="hero-subtitle animate__animated animate__fadeIn animate__delay-1s">Where every scoop tells a story</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="about-container">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <div class="story-section ps-lg-5 ps-md-4 ps-3">
+                <h2 class="section-title mb-4 animate__animated animate__fadeInLeft">How It All Began</h2>
+                <p class="animate__animated animate__fadeIn animate__delay-1s">
+                    <span class="year-highlight">2000</span>, culinary graduates Emma Rodriguez and James Chen noticed something missing in their neighborhood - truly exceptional ice cream made with passion. They dreamed of creating a place where quality ingredients and creative flavors would come first.
+                </p>
+
+                <p class="animate__animated animate__fadeIn animate__delay-1s">
+                    <span class="year-highlight">2002</span>, they founded Scoopy with a simple mission: to craft unforgettable ice cream experiences. What started as a small corner shop with six flavors has grown into a beloved local institution, all while staying true to their original commitment to quality.
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="shop-image-container text-center pe-lg-4 pe-md-3 pe-0 animate__animated animate__fadeInRight">
+                <img src="/images/Shop.png" alt="Scoopy Shop" class="shop-image img-fluid rounded-lg shadow-lg">
+                <div class="image-caption mt-3">
+                    <small class="text-muted">Our charming flagship store in downtown</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="founders-quote my-5 p-4 animate__animated animate__fadeInUp">
+                <p class="mb-0 font-italic">
+                    "We believe ice cream should be more than just a treat - it should be a moment of joy,
+                    a spark of creativity, and a taste you'll remember."
+                </p>
+                <p class="text-right mt-2">- Emma & James, Founders</p>
+            </div>
+
+            <h2 class="section-title text-center mb-4 animate__animated animate__fadeIn">Our Philosophy</h2>
+            <p class="animate__animated animate__fadeIn animate__delay-1s">
+                Today, under the leadership of Head Chef Maria Gonzalez, Scoopy continues to innovate while
+                honoring our founders' vision. Our kitchen uses locally-sourced ingredients and our
+                proprietary slow-churn process to create ice cream that's richer, creamier, and more
+                flavorful than anything you've tasted before.
+            </p>
+
+            <p class="mt-4 animate__animated animate__fadeIn animate__delay-1s">
+                From our original six flavors to our current selection of over 50 rotating varieties,
+                each scoop tells the story of our passion for quality and our love of bringing people
+                together through delicious, handcrafted ice cream.
+            </p>
+
+            <div class="milestones mt-5 animate__animated animate__fadeInUp animate__delay-1s">
+                <h2 class="section-title text-center mb-4">Our Sweet Journey</h2>
+                <ul class="journey-list">
+                    <li class="animate__animated animate__fadeInRight"><span class="journey-year">2000</span> Concept born in a small apartment kitchen</li>
+                    <li class="animate__animated animate__fadeInRight animate__delay-1s"><span class="journey-year">2002</span> First Scoopy shop opens downtown</li>
+                    <li class="animate__animated animate__fadeInRight animate__delay-2s"><span class="journey-year">2003</span> Named "Best New Ice Cream" by City Magazine</li>
+                    <li class="animate__animated animate__fadeInRight animate__delay-3s"><span class="journey-year">2004</span> Expanded to second location</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<Footer />
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(500); // Small delay for animations to trigger
+        }
+    }
+}
+
+<style>
+    /* Import Animate.css */
+    @@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+    
+
+    /* Hero Section Styles */
+    .hero-section {
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        position: relative;
+        margin-bottom: 4rem;
+        background-attachment: fixed;
+    }
+
+    .hero-overlay {
+        background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(255,107,157,0.1));
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-title {
+        color: white;
+        font-size: 4.5rem;
+        font-weight: 800;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        color: #ffd6e7;
+        font-size: 2rem;
+        margin-top: 1rem;
+        font-weight: 300;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* About Container */
+    .about-container {
+        padding: 4rem 0;
+        background-color: #f9f9f9;
+    }
+
+    .section-title {
+        color: #ff6b9d;
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+    }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #6ac3e6;
+        }
+
+    .story-section {
+        line-height: 1.9;
+        font-size: 1.2rem;
+        color: #444;
+    }
+
+    .year-highlight {
+        font-weight: bold;
+        color: #ff6b9d;
+        font-size: 1.3rem;
+    }
+
+    .shop-image {
+        max-height: 500px;
+        width: auto;
+        border: 8px solid white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transform: perspective(1000px) rotateY(-5deg);
+        transition: all 0.5s ease;
+    }
+
+        .shop-image:hover {
+            transform: perspective(1000px) rotateY(0deg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+    .founders-quote {
+        background-color: #fff8f8;
+        border-left: 4px solid #ff6b9d;
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+        .founders-quote:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+    .journey-list {
+        list-style-type: none;
+        padding-left: 0;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+        .journey-list li {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            padding-left: 70px;
+            transition: all 0.3s ease;
+        }
+
+            .journey-list li:hover {
+                transform: translateX(10px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            }
+
+    .journey-year {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        width: 50px;
+        background-color: #ff6b9d;
+        color: white;
+        text-align: center;
+        border-radius: 6px;
+        padding: 3px 0;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 1200px) {
+        .hero-title {
+            font-size: 3.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+        }
+
+        .shop-image {
+            max-height: 450px;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+        }
+
+        .shop-image {
+            max-height: 400px;
+            margin-bottom: 2rem;
+        }
+
+        .story-section {
+            font-size: 1.1rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero-section {
+            height: 400px;
+            margin-bottom: 2rem;
+            background-attachment: scroll;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+
+        .about-container {
+            padding: 2rem 0;
+        }
+
+        .shop-image {
+            max-height: 350px;
+            transform: none;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .hero-title {
+            font-size: 1.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+
+        .shop-image {
+            max-height: 300px;
+            border-width: 5px;
+        }
+
+        .journey-list li {
+            padding-left: 60px;
+        }
+
+        .journey-year {
+            width: 40px;
+            font-size: 0.9rem;
+        }
+    }
+
+    .about-container {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,246,249,0.9) 100%);
+        padding: 4rem 0;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(106, 102, 189, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .about-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,107,157,0.15) 0%, rgba(255,107,157,0) 70%);
+            z-index: 0;
+        }
+
+        .about-container::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(106,102,189,0.15) 0%, rgba(106,102,189,0) 70%);
+            z-index: 0;
+        }
+
+    /* Colorful section accents */
+    .section-title::after {
+        background: linear-gradient(90deg, #ff6b9d, #6ac3e6);
+        height: 4px;
+        width: 70px;
+    }
+
+    .founders-quote {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,240,245,0.9) 100%);
+        border-left: 4px solid #ff6b9d;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(255,107,157,0.1);
+    }
+
+    .journey-list li {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,248,255,0.95) 100%);
+        border-left: 3px solid #6ac3e6;
+    }
+
+    /* Colorful hover effects */
+    .shop-image:hover {
+        border-color: #ff6b9d;
+    }
+
+    .journey-list li:hover {
+        border-left: 3px solid #ff6b9d;
+        background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,246,249,0.98) 100%);
+    }
+
+    /* Colorful animation effects */
+    @@keyframes floating {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    .shop-image {
+        animation: floating 6s ease-in-out infinite;
+    }
+
+    /* Colorful year highlights */
+    .year-highlight {
+        background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 0 5px;
+    }
+
+    .journey-year {
+        background: linear-gradient(135deg, #6ac3e6, #6a66bd);
+        box-shadow: 0 3px 10px rgba(106,102,189,0.3);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .about-container::before,
+        .about-container::after {
+            display: none;
+        }
+    }
+</style>

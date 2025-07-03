@@ -32,6 +32,7 @@ This is a **Blazor Server** web application showcasing key enterprise-level feat
 
 ---
 
+
 ## ✅ Key Features Implemented
 
 ### 📁 1. Reusable Blazor Components
@@ -77,3 +78,43 @@ Blazor-web-App/
 ├── BlazorApp/        # Blazor Components
 ├── API/              # ASP.NET Core Web API Project
 
+---
+## 🚀 Running the App Locally
+
+### 🧰 Step 1: Clone and Set Up the Project
+
+Follow the instructions below to get the Blazor Server app running on your local machine.
+
+---
+
+#### ✅ Prerequisites
+
+Make sure you have the following installed:
+
+- [.NET SDK 7.0 or later](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+- [Visual Studio 2022 or newer](https://visualstudio.microsoft.com/)
+- [SQL Server (Express or Full Version)](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- [SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)
+- [Git](https://git-scm.com/)
+
+---
+
+#### 📥 Clone the Repository
+
+Open your terminal or Git Bash and run:
+
+```bash
+git clone https://github.com/Aashfa/Blazor-web-App.git
+cd Blazor-web-App
+
+#### Configure connection string:
+
+Open appsettings.json and update the SQL Server connection string
+
+#### Run the project:
+
+Press F5 in Visual Studio or run dotnet run
+
+#### Access the app:
+
+Navigate to https://localhost:xxxx/ (port will be shown in the terminal)

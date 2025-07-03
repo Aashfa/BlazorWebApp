@@ -110,7 +110,7 @@ cd Blazor-web-App
 
 #### Configure connection string:
 
-Open appsettings.json and update the SQL Server connection string
+Open DBHelper class in DAL Layer and update the SQL Server connection string
 
 #### Run the project:
 

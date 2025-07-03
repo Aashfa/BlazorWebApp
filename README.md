@@ -79,6 +79,7 @@ Blazor-web-App/
 ├── API/              # ASP.NET Core Web API Project
 
 ---
+
 ## 🚀 Running the App Locally
 
 ### 🧰 Step 1: Clone and Set Up the Project
